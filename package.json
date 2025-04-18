@@ -1,0 +1,24 @@
+{
+  "name": "api-projet-pc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jkomou/api-projet-pc.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/jkomou/api-projet-pc/issues"
+  },
+  "homepage": "https://github.com/jkomou/api-projet-pc#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
