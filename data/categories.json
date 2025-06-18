@@ -1,0 +1,9 @@
+[
+    { "id": "cpu", "nom": "Processeurs" },
+    { "id": "gpu", "nom": "Cartes Graphiques" },
+    { "id": "ram", "nom": "Mémoire RAM" },
+    { "id": "stockage", "nom": "Stockage" },
+    { "id": "carte_mere", "nom": "Cartes Mères" },
+    { "id": "boitier", "nom": "Boîtiers" },
+    { "id": "alimentation", "nom": "Alimentations" }
+  ]
