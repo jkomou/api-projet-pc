@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const component = require('components');
+const auth = require('../authMiddleware'); // ✅ chemin mis à jour
 
 // GET : liste de tous les composants avec filtres
 router.get('/', (req, res) => {
@@ -41,5 +42,11 @@ router.get('/', (req, res) => {
     const supprimé = composants.splice(index, 1);
     res.json({ message: 'Composant supprimé', composant: supprimé[0] });
   });
-  
-  module.exports = router;
+
+// Exemple de route protégée
+router.post('/ajouter', auth, (req, res) => {
+  res.json({ message: 'Composant ajouté avec succès !' });
+});
+
+module.exports = router;
+

@@ -16,7 +16,7 @@ app.listen(port, () => {
     console.log('Server app listening on port ' + port);
 });
 
-mongoose.connect('mongodb+srv://' + dbUser + ':' + dbPassword + '@cluster0.v4ut44m.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', 
+mongoose.connect('mongodb+srv://' + dbUser + ':' + dbPassword + '@cluster0.v4ut44m.mongodb.net/configurateur_pc?retryWrites=true&w=majority&appName=Cluster0', 
      { useNewUrlParser: true, 
      useUnifiedTopology: true }) 
      .then(() => console.log('Connexion à MongoDB réussie !')) 

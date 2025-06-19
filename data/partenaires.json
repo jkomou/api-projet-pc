@@ -1,0 +1,72 @@
+[
+  {
+    "id": "p1",
+    "nom": "TopAchat",
+    "url": "https://www.topachat.com",
+    "commission": 5,
+    "synchronisation": "quotidienne"
+  },
+  {
+    "id": "p2",
+    "nom": "LDLC",
+    "url": "https://www.ldlc.com",
+    "commission": 4,
+    "synchronisation": "hebdomadaire"
+  },
+  {
+    "id": "p3",
+    "nom": "Amazon",
+    "url": "https://www.amazon.fr",
+    "commission": 5,
+    "synchronisation": "temps réel"
+  },
+  {
+    "id": "p4",
+    "nom": "Materiel.net",
+    "url": "https://www.materiel.net",
+    "commission": 5,
+    "synchronisation": "quotidienne"
+  },
+  {
+    "id": "p5",
+    "nom": "Rue du Commerce",
+    "url": "https://www.rueducommerce.fr",
+    "commission": 2.5,
+    "synchronisation": "hebdomadaire"
+  },
+  {
+    "id": "p6",
+    "nom": "Cdiscount",
+    "url": "https://www.cdiscount.com",
+    "commission": 3,
+    "synchronisation": "quotidienne"
+  },
+  {
+    "id": "p7",
+    "nom": "Cybertek",
+    "url": "https://www.cybertek.fr",
+    "commission": 2,
+    "synchronisation": "mensuelle"
+  },
+  {
+    "id": "p8",
+    "nom": "Infomax",
+    "url": "https://www.infomaxparis.com",
+    "commission": 4,
+    "synchronisation": "hebdomadaire"
+  },
+  {
+    "id": "p9",
+    "nom": "GrosBill",
+    "url": "https://www.grosbill.com",
+    "commission": 3,
+    "synchronisation": "mensuelle"
+  },
+  {
+    "id": "p10",
+    "nom": "Alternate",
+    "url": "https://www.alternate.fr",
+    "commission": 3.5,
+    "synchronisation": "quotidienne"
+  }
+]

@@ -1,0 +1,14 @@
+[
+  {
+    "utilisateur_id": "user1",
+    "date_creation": "2025-06-18T12:00:00Z",
+    "composants": ["cpu1", "gpu1", "ram1", "ssd1"],
+    "cout_total": 1600.95
+  },
+  {
+    "utilisateur_id": "user2",
+    "date_creation": "2025-06-17T10:30:00Z",
+    "composants": ["cpu2", "gpu1", "ram1", "ssd1", "psu1"],
+    "cout_total": 1750.40
+  }
+]
