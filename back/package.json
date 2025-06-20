@@ -10,16 +10,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jkomou/api-projet-pc.git"
+    "url": "git+https://github.com/faysoil/api-projet-pc.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "bugs": {
-    "url": "https://github.com/jkomou/api-projet-pc/issues"
+    "url": "https://github.com/faysoil/api-projet-pc/issues"
   },
-  "homepage": "https://github.com/jkomou/api-projet-pc#readme",
+  "homepage": "https://github.com/faysoil/api-projet-pc#readme",
   "dependencies": {
     "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.2",
