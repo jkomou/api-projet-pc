@@ -1,0 +1,33 @@
+.login-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: orange;
+  }
+  
+  .login-card {
+    width: 100%;
+    max-width: 400px;
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    text-align: center;
+  
+    h1 {
+      margin-bottom: 1.5rem;
+    }
+  }
+  
+  .full-width {
+    width: 100%;
+  }
+  
+  .bottom-link {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    a {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
+  

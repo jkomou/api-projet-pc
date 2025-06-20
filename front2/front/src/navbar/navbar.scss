@@ -1,0 +1,19 @@
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  
+  .logo {
+    font-size: 1.3rem;
+    font-weight: bold;
+  }
+  
+  .spacer {
+    flex: 1 1 auto;
+  }
+  
+  a[mat-button], button[mat-button] {
+    margin-left: 0.5rem;
+  }
+  

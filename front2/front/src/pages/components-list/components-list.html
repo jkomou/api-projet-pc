@@ -1,0 +1,61 @@
+<div class="filter-container">
+    <mat-form-field appearance="fill">
+      <mat-label>Catégorie</mat-label>
+      <mat-select [(value)]="selectedCategory" (selectionChange)="applyFilters()">
+        <mat-option value="">Toutes</mat-option>
+        <mat-option *ngFor="let cat of categories" [value]="cat">
+          {{ cat }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  
+    <mat-form-field appearance="fill">
+      <mat-label>Marque</mat-label>
+      <input matInput [(ngModel)]="selectedBrand" (ngModelChange)="applyFilters()" placeholder="Filtrer par marque">
+    </mat-form-field>
+  </div>
+  
+  <table mat-table [dataSource]="filteredComponents" class="mat-elevation-z8">
+  
+  <!-- components-list.component.html -->
+<ng-container matColumnDef="title">
+    <th mat-header-cell *matHeaderCellDef> Nom </th>
+    <td mat-cell *matCellDef="let el"> {{ el.nom }} </td>
+  </ng-container>
+  
+  <ng-container matColumnDef="category">
+    <th mat-header-cell *matHeaderCellDef> Type </th>
+    <td mat-cell *matCellDef="let el"> {{ el.type }} </td>
+  </ng-container>
+  
+  <ng-container matColumnDef="brand">
+    <th mat-header-cell *matHeaderCellDef> Marque </th>
+    <td mat-cell *matCellDef="let el"> {{ el.marque }} </td>
+  </ng-container>
+  
+  <ng-container matColumnDef="price">
+    <th mat-header-cell *matHeaderCellDef> Prix (€) </th>
+    <td mat-cell *matCellDef="let el"> {{ el.prix | currency:'EUR' }} </td>
+  </ng-container>
+  
+  
+    <!-- Actions -->
+    <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <td mat-cell *matCellDef="let el">
+          <button mat-icon-button color="warn"
+                  (click)="deleteComponent(el._id)">
+            <mat-icon>X</mat-icon>
+          </button>
+          <button mat-button color="primary"
+                  [routerLink]="['/components', el._id]">
+            Détails
+          </button>
+        </td>
+      </ng-container>
+      
+  
+    <tr mat-header-row *matHeaderRowDef="['title','category','brand','price','actions']"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['title','category','brand','price','actions'];"></tr>
+  </table>
+  
