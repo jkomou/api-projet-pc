@@ -1,10 +1,4 @@
-### Appel GET sur serveur GET
-GET http://localhost:801/posts
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiS3lsZSIsImlhdCI6MTc1MDM1Mjg1OSwiZXhwIjoxNzUwMzUzNzU5fQ.y6BW9giUzFOaCQoaFsWs0-U2H9fAhACq8qBdBstF-tc
-
-###
-
-### Connexion sur serveur POST
+### Connexion utilisateur (serveur Auth - port 800)
 POST http://localhost:800/login
 Content-Type: application/json
 
@@ -14,10 +8,58 @@ Content-Type: application/json
 
 ###
 
-### Rafraîchir le token
+### Rafraîchir le token (si applicable)
 POST http://localhost:800/token
 Content-Type: application/json
 
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiS3lsZSIsImlhdCI6MTc1MDM1MDIxNn0.PbMGwROf8EcDe9CwA0TM1R5j_5DnDOZKQo_EU_xg-sc"
+  "token": "<TON_REFRESH_TOKEN_ICI>"
 }
+
+###
+
+### Appel GET posts protégés (serveur Principal - port 801)
+GET http://localhost:801/posts
+Authorization: Bearer 9eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiS3lsZSIsImlhdCI6MTc1MDQxMDYzMSwiZXhwIjoxNzUwNDExNTMxfQ.FrKJfE3ZvPmWkzNZa488MEUeFJi1YnX5zOdyE7Nxks0
+
+###
+
+### Ajouter un composant (serveur Principal - port 801)
+POST http://localhost:801/composants
+Authorization: Bearer <TON_ACCESS_TOKEN_ICI>
+Content-Type: application/json
+
+{
+  "categorie_id": "cpu",
+  "marque": "Intel",
+  "nom": "Core i9-13900K",
+  "prix": 629.99,
+  "specs": {
+    "cores": 24,
+    "threads": 32,
+    "base_clock": "3.0 GHz"
+  }
+}
+
+###
+
+### Récupérer tous les composants
+GET http://localhost:801/composants
+Authorization: Bearer <TON_ACCESS_TOKEN_ICI>
+
+###
+
+### Modifier un composant (remplace l’ID avec un vrai ID MongoDB)
+PUT http://localhost:801/composants/665a26aabb1234567890abcd
+Authorization: Bearer <TON_ACCESS_TOKEN_ICI>
+Content-Type: application/json
+
+{
+  "prix": 599.99
+}
+
+###
+
+### Supprimer un composant (remplace aussi avec un vrai ID MongoDB)
+DELETE http://localhost:801/composants/665a26aabb1234567890abcd
+Authorization: Bearer <TON_ACCESS_TOKEN_ICI>

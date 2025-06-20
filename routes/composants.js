@@ -1,52 +1,65 @@
 const express = require('express');
 const router = express.Router();
-const component = require('components');
-const auth = require('../authMiddleware'); // ✅ chemin mis à jour
+const Composant = require('../models/Composant'); // Assure-toi que le chemin est correct
+const auth = require('../authMiddleware'); // Middleware d'authentification (si utilisé)
 
-// GET : liste de tous les composants avec filtres
-router.get('/', (req, res) => {
+// ✅ GET : liste de tous les composants avec filtres
+router.get('/', async (req, res) => {
+  try {
     const { categorie, marque } = req.query;
-    let resultats = composants;
-  
-    if (categorie) resultats = resultats.filter(c => c.categorie_id === categorie);
-    if (marque) resultats = resultats.filter(c => c.marque === marque);
-  
-    res.json(resultats);
-  });
-  
-  // POST : ajout d’un composant
-  router.post('/', (req, res) => {
-    const nouveauComposant = req.body;
-    composants.push(nouveauComposant);
-    res.status(201).json({ message: 'Composant ajouté', composant: nouveauComposant });
-  });
-  
-  // PUT : modification d’un composant
-  router.put('/:id', (req, res) => {
-    const { id } = req.params;
-    const index = composants.findIndex(c => c.id === id);
-  
-    if (index === -1) return res.status(404).json({ message: 'Composant non trouvé' });
-  
-    composants[index] = { ...composants[index], ...req.body };
-    res.json({ message: 'Composant mis à jour', composant: composants[index] });
-  });
-  
-  // DELETE : suppression d’un composant
-  router.delete('/:id', (req, res) => {
-    const { id } = req.params;
-    const index = composants.findIndex(c => c.id === id);
-  
-    if (index === -1) return res.status(404).json({ message: 'Composant non trouvé' });
-  
-    const supprimé = composants.splice(index, 1);
-    res.json({ message: 'Composant supprimé', composant: supprimé[0] });
-  });
+    let filtre = {};
+    if (categorie) filtre.categorie_id = categorie;
+    if (marque) filtre.marque = marque;
 
-// Exemple de route protégée
-router.post('/ajouter', auth, (req, res) => {
-  res.json({ message: 'Composant ajouté avec succès !' });
+    const composants = await Composant.find(filtre);
+    res.json(composants);
+  } catch (err) {
+    res.status(500).json({ message: 'Erreur serveur', erreur: err.message });
+  }
+});
+
+// ✅ POST : ajout d’un composant
+router.post('/', async (req, res) => {
+  try {
+    const nouveauComposant = new Composant(req.body);
+    await nouveauComposant.save();
+    res.status(201).json({ message: 'Composant ajouté', composant: nouveauComposant });
+  } catch (err) {
+    res.status(400).json({ message: 'Erreur lors de l’ajout', erreur: err.message });
+  }
+});
+
+// ✅ PUT : modification d’un composant
+router.put('/:id', async (req, res) => {
+  try {
+    const updated = await Composant.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!updated) return res.status(404).json({ message: 'Composant non trouvé' });
+    res.json({ message: 'Composant mis à jour', composant: updated });
+  } catch (err) {
+    res.status(400).json({ message: 'Erreur lors de la mise à jour', erreur: err.message });
+  }
+});
+
+// ✅ DELETE : suppression d’un composant
+router.delete('/:id', async (req, res) => {
+  try {
+    const supprimé = await Composant.findByIdAndDelete(req.params.id);
+    if (!supprimé) return res.status(404).json({ message: 'Composant non trouvé' });
+    res.json({ message: 'Composant supprimé', composant: supprimé });
+  } catch (err) {
+    res.status(500).json({ message: 'Erreur serveur', erreur: err.message });
+  }
+});
+
+// 🔒 Exemple de route protégée (utilise un middleware d’auth)
+router.post('/ajouter', auth, async (req, res) => {
+  try {
+    const composant = new Composant(req.body);
+    await composant.save();
+    res.json({ message: 'Composant ajouté avec succès !', composant });
+  } catch (err) {
+    res.status(400).json({ message: 'Erreur', erreur: err.message });
+  }
 });
 
 module.exports = router;
-

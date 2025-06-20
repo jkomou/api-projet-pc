@@ -1,12 +1,11 @@
 const mongoose = require('mongoose');
 
 const composantSchema = new mongoose.Schema({
-  id: String,
-  categorie_id: String,
-  marque: String,
-  nom: String,
-  prix: Number,
-  specs: mongoose.Schema.Types.Mixed // autorise tout type de structure ici
+  categorie_id: { type: String, required: true },
+  marque: { type: String, required: true },
+  nom: { type: String, required: true },
+  prix: { type: Number, required: true },
+  specs: mongoose.Schema.Types.Mixed
 });
 
 module.exports = mongoose.model('Composant', composantSchema);
