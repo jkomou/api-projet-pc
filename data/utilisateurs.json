@@ -28,5 +28,11 @@
     "nom": "Emma Lefevre",
     "email": "emma.lefevre@example.com",
     "mot_de_passe": "hashed_password_5"
+  },
+  {
+    "id": "u6",
+    "nom": "Amadou Sangaré",
+    "email": "ama.sangaré@example.com",
+    "mot_de_passe": "hashed_password_5"
   }
 ]
