@@ -7,10 +7,13 @@ const utilisateurRoutes = require('./routes/utilisateurs');
 const configurationsRoutes = require('./routes/configurations');
 const categoriesRouter = require('./routes/categories');
 const partenairesRoutes = require('./routes/partenaires'); 
+const cors    = require('cors');
 
 const app = express();
 
 app.use(express.json());
+
+app.use(cors());
 
 app.get('/', (req, res) => {
   res.set('Content-Type', 'text/html');
