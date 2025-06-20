@@ -1,0 +1,23 @@
+### Appel GET sur serveur GET
+GET http://localhost:801/posts
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiS3lsZSIsImlhdCI6MTc1MDM1Mjg1OSwiZXhwIjoxNzUwMzUzNzU5fQ.y6BW9giUzFOaCQoaFsWs0-U2H9fAhACq8qBdBstF-tc
+
+###
+
+### Connexion sur serveur POST
+POST http://localhost:800/login
+Content-Type: application/json
+
+{
+  "username": "Kyle"
+}
+
+###
+
+### Rafraîchir le token
+POST http://localhost:800/token
+Content-Type: application/json
+
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiS3lsZSIsImlhdCI6MTc1MDM1MDIxNn0.PbMGwROf8EcDe9CwA0TM1R5j_5DnDOZKQo_EU_xg-sc"
+}

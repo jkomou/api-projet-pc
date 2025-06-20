@@ -5,12 +5,15 @@ const app = express();
 const port = process.env.PORT || 8000;
 const dbPassword = process.env.DB_PASSWORD;
 const dbUser = process.env.DB_USER;
-
+const authRoutes = require('./routes/auth'); // si le fichier est dans routes/
 
 app.get('/', (req, res) => {
     res.set('Content-Type', 'text/html');
     res.send('Hello world !!');
 });
+
+app.use(express.json());
+app.use(authRoutes); // Monte les routes de auth.js
 
 app.listen(port, () => {
     console.log('Server app listening on port ' + port);
