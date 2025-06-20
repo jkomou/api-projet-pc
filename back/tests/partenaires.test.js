@@ -45,15 +45,42 @@ describe('Partenaires API', () => {
     expect(res.body[0].prix).toBe(145);
   });
 
-  test('POST /partenaires/:partenaireId/prix/:composantId - Ajouter un prix', async () => {
-    composant = await new Composant({ titre: 'Ryzen 5', marque: 'AMD', categorie_id: 'CPU', prix: 180 }).save();
-    partenaire = await new Partenaire({ nom: 'CDiscount' }).save();
+  describe('POST /partenaires/:partenaireId/prix/:composantId', () => {
+  let adminToken;
+  let partenaireId, composantId;
 
+  beforeAll(async () => {
+    // Connexion admin
+    const resLogin = await request(app)
+      .post('/auth/login')
+      .send({
+        email: 'admin@example.com',
+        mot_de_passe: 'motDePasseAdmin',
+      });
+    adminToken = resLogin.body.accessToken;
+
+    // Création données nécessaires (si besoin)
+    const partenaireRes = await request(app)
+      .post('/partenaires')
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({ nom: 'TestPartner', site_web: 'https://test.fr' });
+    partenaireId = partenaireRes.body._id;
+
+    const composantRes = await request(app)
+      .post('/composants')
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({ titre: 'TestCPU', categorie_id: 'cat_cpu', marque: 'Intel', prix: 100, specifications: {} });
+    composantId = composantRes.body._id;
+  });
+
+  it('doit ajouter un prix pour un composant donné', async () => {
     const res = await request(app)
-      .post(`/partenaires/${partenaire._id}/prix/${composant._id}`)
+      .post(`/partenaires/${partenaireId}/prix/${composantId}`)
+      .set('Authorization', `Bearer ${adminToken}`)
       .send({ prix: 170 });
 
     expect(res.statusCode).toBe(200);
     expect(res.body.prix).toBe(170);
   });
+});
 });

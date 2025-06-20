@@ -1,6 +1,6 @@
-# ========================
-# 1. Gestion Utilisateurs
-# ========================
+### ========================
+### 1. Gestion Utilisateurs
+### ========================
 
 ### Inscription
 POST http://localhost:8000/auth/signup
@@ -11,7 +11,7 @@ Content-Type: application/json
   "mot_de_passe": "monMotDePasse123"
 }
 
-### Connexion (login)
+### Connexion
 POST http://localhost:8000/auth/login
 Content-Type: application/json
 
@@ -25,7 +25,7 @@ POST http://localhost:8000/auth/token
 Content-Type: application/json
 
 {
-  "token": "TOKEN_DE_REFRESH_ICI"
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.refresh_token_exemple"
 }
 
 ### Logout
@@ -33,67 +33,70 @@ POST http://localhost:8000/auth/logout
 Content-Type: application/json
 
 {
-  "token": "TOKEN_DE_REFRESH_À_REVOIR"
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.refresh_token_exemple"
 }
 
-### Infos utilisateur connecté (requires Bearer token)
+### Infos utilisateur connecté
 GET http://localhost:8000/auth/me
-Authorization: Bearer ACCESS_TOKEN_ICI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.access_token_exemple
 
 
-# =================================
-# 2. Catégories et Composants
-# =================================
+### =================================
+### 2. Catégories et Composants
+### =================================
 
-### Lister les catégories de composants
+### Lister les catégories
 GET http://localhost:8000/categories
 
-### Lister composants disponibles (avec filtres optionnels)
-GET http://localhost:8000/composants?categorie=ID_CATEGORIE&marque=MARQUE
+### Lister composants disponibles
+GET http://localhost:8000/composants?categorie=664efcabc123456789012345&marque=Intel
 
 ### Détail d’un composant
-GET http://localhost:8000/composants/:id
+GET http://localhost:8000/composants/664eff9dc123456789012345
 
-### Ajouter un composant (admin only - requires Bearer token)
+### Ajouter un composant (admin)
 POST http://localhost:8000/composants
-Authorization: Bearer ADMIN_ACCESS_TOKEN
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.admin_token_exemple
 Content-Type: application/json
 
 {
   "titre": "Intel Core i9",
-  "categorie_id": "ID_CATEGORIE_CPU",
+  "categorie_id": "664efcabc123456789012345",
   "marque": "Intel",
   "prix": 500,
-  "specifications": { "frequence": "3.6GHz", "cores": 8 }
+  "specifications": {
+    "frequence": "3.6GHz",
+    "cores": 8
+  }
 }
 
-### Modifier un composant (admin only)
-PUT http://localhost:8000/composants/:id
-Authorization: Bearer ADMIN_ACCESS_TOKEN
+### Modifier un composant (admin)
+PUT http://localhost:8000/composants/664eff9dc123456789012345
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.admin_token_exemple
 Content-Type: application/json
 
 {
   "prix": 520
 }
 
-### Supprimer un composant (admin only)
-DELETE http://localhost:8000/composants/:id
-Authorization: Bearer ADMIN_ACCESS_TOKEN
+### Supprimer un composant (admin)
+DELETE http://localhost:8000/composants/664eff9dc123456789012345
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.admin_token_exemple
 
 
-# ======================================
-# 3. Partenaires marchands & Coûts
-# ======================================
+### ======================================
+### 3. Partenaires marchands & Coûts
+### ======================================
 
 ### Lister tous les partenaires
 GET http://localhost:8000/partenaires
 
-### Lister prix pour un composant donné
-GET http://localhost:8000/partenaires/:composantId/prix
+### Lister prix pour un composant
+GET http://localhost:8000/partenaires/664eff9dc123456789012345/prix
 
-### Ajouter un partenaire (admin only)
+### Ajouter un partenaire (admin)
 POST http://localhost:8000/partenaires
-Authorization: Bearer ADMIN_ACCESS_TOKEN
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.admin_token_exemple
 Content-Type: application/json
 
 {
@@ -101,54 +104,58 @@ Content-Type: application/json
   "site_web": "https://ldlc.com"
 }
 
-### Modifier partenaire (admin only)
-PUT http://localhost:8000/partenaires/:id
-Authorization: Bearer ADMIN_ACCESS_TOKEN
+### Modifier un partenaire (admin)
+PUT http://localhost:8000/partenaires/66500000c123456789012345
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.admin_token_exemple
 Content-Type: application/json
 
 {
-  "nom": "Nouveau Nom"
+  "nom": "LDLC Modifié"
 }
 
-### Supprimer partenaire (admin only)
-DELETE http://localhost:8000/partenaires/:id
-Authorization: Bearer ADMIN_ACCESS_TOKEN
+### Supprimer un partenaire (admin)
+DELETE http://localhost:8000/partenaires/66500000c123456789012345
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.admin_token_exemple
 
-### Ajouter/Maj prix d’un composant par un partenaire (admin only)
-POST http://localhost:8000/partenaires/:partenaireId/prix/:composantId
-Authorization: Bearer ADMIN_ACCESS_TOKEN
+### Ajouter/Maj prix d’un composant (admin)
+POST http://localhost:8000/partenaires/66500000c123456789012345/prix/664eff9dc123456789012345
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.admin_token_exemple
 Content-Type: application/json
 
 {
   "prix": 450
 }
 
-### Supprimer prix (admin only)
-DELETE http://localhost:8000/partenaires/:partenaireId/prix/:composantId
-Authorization: Bearer ADMIN_ACCESS_TOKEN
+### Supprimer prix (admin)
+DELETE http://localhost:8000/partenaires/66500000c123456789012345/prix/664eff9dc123456789012345
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.admin_token_exemple
 
 
-# ===============================
-# 4. Gestion Configurations PC
-# ===============================
+### ===============================
+### 4. Gestion Configurations PC
+### ===============================
 
-### Lister configurations de l'utilisateur connecté
+### Lister mes configurations
 GET http://localhost:8000/configurations
-Authorization: Bearer USER_ACCESS_TOKEN
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.access_token_exemple
 
-### Créer une nouvelle configuration
+### Créer une configuration
 POST http://localhost:8000/configurations
-Authorization: Bearer USER_ACCESS_TOKEN
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.access_token_exemple
 Content-Type: application/json
 
 {
   "nom": "Ma config gaming",
-  "composants": ["id_composant1", "id_composant2", "id_composant3"]
+  "composants": [
+    "664eff9dc123456789012345",
+    "664eff9dc123456789012346",
+    "664eff9dc123456789012347"
+  ]
 }
 
 ### Modifier une configuration
-PUT http://localhost:8000/configurations/:id
-Authorization: Bearer USER_ACCESS_TOKEN
+PUT http://localhost:8000/configurations/66500111c123456789012345
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.access_token_exemple
 Content-Type: application/json
 
 {
@@ -156,18 +163,18 @@ Content-Type: application/json
 }
 
 ### Supprimer une configuration
-DELETE http://localhost:8000/configurations/:id
-Authorization: Bearer USER_ACCESS_TOKEN
+DELETE http://localhost:8000/configurations/66500111c123456789012345
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.access_token_exemple
 
-### Exporter configuration en PDF
-GET http://localhost:8000/configurations/:id/export
-Authorization: Bearer USER_ACCESS_TOKEN
+### Exporter en PDF
+GET http://localhost:8000/configurations/66500111c123456789012345/export
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.access_token_exemple
 
 
-# =================================
-# 5. Calcul Coût Total d’une config
-# =================================
+### =================================
+### 5. Calcul Coût Total d’une config
+### =================================
 
-### Exemple simple (tu peux adapter selon API)
-GET http://localhost:8000/configurations/:id/cout-total
-Authorization: Bearer USER_ACCESS_TOKEN
+### Coût total
+GET http://localhost:8000/configurations/66500111c123456789012345/cout-total
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.access_token_exemple

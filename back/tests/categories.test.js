@@ -3,25 +3,35 @@ const app = require('../app');
 const mongoose = require('mongoose');
 const Composant = require('../models/Composant');
 const Utilisateur = require('../models/Utilisateur');
+const Categorie = require('../models/Categorie');
 const bcrypt = require('bcrypt');
 
 require('dotenv').config({ path: '.env.test' });
 
 let token;
+let categorieId;
 
 describe('Composants API', () => {
   beforeAll(async () => {
     await mongoose.connect(process.env.MONGODB_URI_TEST);
 
-    // Nettoyer utilisateurs pour éviter doublons
+    // Créer une catégorie test
+    const categorie = await Categorie.create({ nom: 'CPU' });
+    categorieId = categorie._id.toString();
+
+    // Supprimer tout utilisateur avec l'email test
     await Utilisateur.deleteMany({ email: 'test@example.com' });
 
-    // Créer un utilisateur test (adapter la propriété mot_de_passe selon ton schéma)
+    // Créer un utilisateur avec rôle admin
     const hashedPassword = await bcrypt.hash('testpass', 10);
-    const user = new Utilisateur({ email: 'test@example.com', mot_de_passe: hashedPassword });
+    const user = new Utilisateur({
+      email: 'test@example.com',
+      mot_de_passe: hashedPassword,
+      role: 'admin', // ⚠️ Assure-toi que le schéma gère le rôle
+    });
     await user.save();
 
-    // Connexion pour récupérer le token JWT
+    // Connexion
     const res = await request(app)
       .post('/auth/login')
       .send({ email: 'test@example.com', mot_de_passe: 'testpass' });
@@ -34,7 +44,9 @@ describe('Composants API', () => {
   });
 
   afterAll(async () => {
-    await mongoose.connection.dropDatabase();
+    await Composant.deleteMany({});
+    await Utilisateur.deleteMany({});
+    await Categorie.deleteMany({});
     await mongoose.connection.close();
   });
 
@@ -45,7 +57,7 @@ describe('Composants API', () => {
       .send({
         titre: 'Intel Core i5',
         marque: 'Intel',
-        categorie_id: 'CPU',
+        categorie_id: categorieId,
         prix: 200,
       });
 
@@ -54,7 +66,12 @@ describe('Composants API', () => {
   });
 
   test('GET /composants - Lister composants', async () => {
-    await new Composant({ titre: 'RTX 3060', marque: 'NVIDIA', categorie_id: 'GPU', prix: 400 }).save();
+    await Composant.create({
+      titre: 'RTX 3060',
+      marque: 'NVIDIA',
+      categorie_id: categorieId,
+      prix: 400,
+    });
 
     const res = await request(app).get('/composants');
 
@@ -64,7 +81,12 @@ describe('Composants API', () => {
   });
 
   test('PUT /composants/:id - Modifier un composant', async () => {
-    const composant = await new Composant({ titre: 'RAM 8GB', marque: 'Corsair', categorie_id: 'RAM', prix: 50 }).save();
+    const composant = await Composant.create({
+      titre: 'RAM 8GB',
+      marque: 'Corsair',
+      categorie_id: categorieId,
+      prix: 50,
+    });
 
     const res = await request(app)
       .put(`/composants/${composant._id}`)
@@ -76,7 +98,12 @@ describe('Composants API', () => {
   });
 
   test('DELETE /composants/:id - Supprimer un composant', async () => {
-    const composant = await new Composant({ titre: 'SSD 500GB', marque: 'Samsung', categorie_id: 'Stockage', prix: 80 }).save();
+    const composant = await Composant.create({
+      titre: 'SSD 500GB',
+      marque: 'Samsung',
+      categorie_id: categorieId,
+      prix: 80,
+    });
 
     const res = await request(app)
       .delete(`/composants/${composant._id}`)

@@ -31,13 +31,17 @@ describe('Auth API', () => {
   });
 
   test('POST /auth/signup - email déjà utilisé', async () => {
-    await new Utilisateur({ email: 'user@test.com', mot_de_passe: 'hashedpass' }).save();
-    const res = await request(app)
-      .post('/auth/signup')
-      .send({ email: 'user@test.com', mot_de_passe: 'password123' });
-    expect(res.statusCode).toBe(400);
-    expect(res.body.message).toMatch(/déjà utilisé/i);
-  });
+  await request(app)
+    .post('/auth/signup')
+    .send({ email: 'user@test.com', mot_de_passe: 'password123' });
+
+  const res = await request(app)
+    .post('/auth/signup')
+    .send({ email: 'user@test.com', mot_de_passe: 'autrepass456' });
+
+  expect(res.statusCode).toBe(400);
+  expect(res.body.message).toMatch(/déjà utilisé/i);
+});
 
   test('POST /auth/login - connexion réussie', async () => {
     await request(app)
