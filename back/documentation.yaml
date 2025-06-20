@@ -1,0 +1,433 @@
+openapi: 3.0.3
+info:
+  title: API Configurateur PC
+  version: 1.0.0
+  description: API pour gérer utilisateurs, composants, partenaires, configurations et calcul du coût.
+
+servers:
+  - url: http://localhost:8000
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Utilisateur:
+      type: object
+      properties:
+        _id:
+          type: string
+        nom:
+          type: string
+        email:
+          type: string
+        mot_de_passe:
+          type: string
+          format: password
+        date_inscription:
+          type: string
+          format: date-time
+
+    Composant:
+      type: object
+      properties:
+        _id: { type: string }
+        titre: { type: string }
+        categorie_id: { type: string }
+        marque: { type: string }
+        prix: { type: number }
+        specifications: { type: object }
+
+    Partenaire:
+      type: object
+      properties:
+        _id: { type: string }
+        nom: { type: string }
+        site_web: { type: string }
+
+    Prix:
+      type: object
+      properties:
+        _id: { type: string }
+        partenaire:
+          $ref: "#/components/schemas/Partenaire"
+        composant:
+          $ref: "#/components/schemas/Composant"
+        prix: { type: number }
+
+    Configuration:
+      type: object
+      properties:
+        _id: { type: string }
+        utilisateur: { type: string }
+        nom: { type: string }
+        composants:
+          type: array
+          items: { type: string }
+        date_creation: { type: string, format: date-time }
+
+paths:
+  /auth/signup:
+    post:
+      summary: Inscription
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email: { type: string }
+                mot_de_passe: { type: string, format: password }
+              required: [email, mot_de_passe]
+      responses:
+        "201":
+          description: Utilisateur créé
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: { type: string }
+        "400":
+          description: Email déjà utilisé
+
+  /auth/login:
+    post:
+      summary: Connexion
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email: { type: string }
+                mot_de_passe: { type: string, format: password }
+              required: [email, mot_de_passe]
+      responses:
+        "200":
+          description: Authentification réussie
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken: { type: string }
+                  refreshToken: { type: string }
+        "401":
+          description: Email ou mot de passe incorrect
+
+  /auth/token:
+    post:
+      summary: Rafraîchir token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token: { type: string }
+              required: [token]
+      responses:
+        "200":
+          description: Nouveau accessToken
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken: { type: string }
+        "401": { description: Aucun token fourni }
+        "403": { description: Token invalide ou non existant }
+
+  /auth/logout:
+    post:
+      summary: Déconnexion
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token: { type: string }
+              required: [token]
+      responses:
+        "204": { description: OK — refreshToken supprimé }
+        "400": { description: Token manquant }
+
+  /auth/me:
+    get:
+      summary: Infos utilisateur connecté
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Informations utilisateur
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Utilisateur"
+        "401": { description: Token manquant }
+        "403": { description: Token invalide }
+
+  /categories:
+    get:
+      summary: Lister catégories de composants
+      responses:
+        "200":
+          description: Liste de catégories
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { type: object }
+
+  /composants:
+    get:
+      summary: Lister composants (avec filtres)
+      parameters:
+        - in: query
+          name: categorie
+          schema: { type: string }
+        - in: query
+          name: marque
+          schema: { type: string }
+      responses:
+        "200":
+          description: Liste de composants
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Composant"
+    post:
+      summary: Ajouter un composant (admin)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Composant"
+      responses:
+        "201": { description: Composant ajouté }
+
+  /composants/{id}:
+    get:
+      summary: Détail d’un composant
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Composant"
+    put:
+      summary: Modifier un composant (admin)
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prix: { type: number }
+      responses:
+        "200": { description: Composant mis à jour }
+    delete:
+      summary: Supprimer un composant (admin)
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        "200": { description: Composant supprimé }
+
+  /partenaires:
+    get:
+      summary: Lister tous les partenaires
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Partenaire"
+    post:
+      summary: Ajouter un partenaire (admin)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Partenaire"
+      responses:
+        "201": { description: Partenaire ajouté }
+
+  /partenaires/{partenaireId}/prix/{composantId}:
+    post:
+      summary: Ajouter ou mettre à jour un prix (admin)
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: partenaireId; composantId
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prix: { type: number }
+      responses:
+        "200": { description: Prix créé/mis à jour }
+    delete:
+      summary: Supprimer un prix (admin)
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: partenaireId; composantId
+          schema: { type: string }
+      responses:
+        "204": { description: Prix supprimé }
+
+  /partenaires/{composantId}/prix:
+    get:
+      summary: Lister prix d’un composant
+      parameters:
+        - in: path
+          name: composantId
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Prix"
+
+  /configurations:
+    get:
+      summary: Lister configurations de l’utilisateur
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Configuration"
+    post:
+      summary: Créer une configuration
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nom: { type: string }
+                composants:
+                  type: array
+                  items: { type: string }
+      responses:
+        "201": { description: Config créée }
+
+  /configurations/{id}:
+    put:
+      summary: Modifier une config
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nom: { type: string }
+      responses:
+        "200": { description: Config mise à jour }
+    delete:
+      summary: Supprimer une config
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema: { type: string }
+      responses:
+        "204": { description: Config supprimée }
+    get:
+      summary: Exporter config en PDF
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema: { type: string }
+      responses:
+        "200":
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+
+  /configurations/{id}/cout-total:
+    get:
+      summary: Calculer coût total de la configuration
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema: { type: string }
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  coutTotal: { type: number }
