@@ -1,14 +1,16 @@
 [
   {
-    "utilisateur_id": "user1",
-    "date_creation": "2025-06-18T12:00:00Z",
+    "nom_config": "Configuration Jean Dupont",
+    "utilisateur_email": "jean.dupont@example.com",
     "composants": ["cpu1", "gpu1", "ram1", "ssd1"],
-    "cout_total": 1600.95
+    "date_creation": "2025-06-18T12:00:00Z",
+    "cout_total": 1350
   },
   {
-    "utilisateur_id": "user2",
-    "date_creation": "2025-06-17T10:30:00Z",
-    "composants": ["cpu2", "gpu1", "ram1", "ssd1", "psu1"],
-    "cout_total": 1750.40
+    "nom_config": "Configuration Marie Curie",
+    "utilisateur_email": "marie.curie@example.com",
+    "composants": ["cpu1", "ram1"],
+    "date_creation": "2025-06-19T15:30:00Z",
+    "cout_total": 450
   }
 ]

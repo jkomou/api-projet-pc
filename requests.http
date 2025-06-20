@@ -1,65 +1,173 @@
-### Connexion utilisateur (serveur Auth - port 800)
-POST http://localhost:800/login
+# ========================
+# 1. Gestion Utilisateurs
+# ========================
+
+### Inscription
+POST http://localhost:8000/auth/signup
 Content-Type: application/json
 
 {
-  "username": "Kyle"
+  "email": "utilisateur@example.com",
+  "mot_de_passe": "monMotDePasse123"
 }
 
-###
-
-### Rafraîchir le token (si applicable)
-POST http://localhost:800/token
+### Connexion (login)
+POST http://localhost:8000/auth/login
 Content-Type: application/json
 
 {
-  "token": "<TON_REFRESH_TOKEN_ICI>"
+  "email": "utilisateur@example.com",
+  "mot_de_passe": "monMotDePasse123"
 }
 
-###
-
-### Appel GET posts protégés (serveur Principal - port 801)
-GET http://localhost:801/posts
-Authorization: Bearer 9eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiS3lsZSIsImlhdCI6MTc1MDQxMDYzMSwiZXhwIjoxNzUwNDExNTMxfQ.FrKJfE3ZvPmWkzNZa488MEUeFJi1YnX5zOdyE7Nxks0
-
-###
-
-### Ajouter un composant (serveur Principal - port 801)
-POST http://localhost:801/composants
-Authorization: Bearer <TON_ACCESS_TOKEN_ICI>
+### Refresh token
+POST http://localhost:8000/auth/token
 Content-Type: application/json
 
 {
-  "categorie_id": "cpu",
+  "token": "TOKEN_DE_REFRESH_ICI"
+}
+
+### Logout
+POST http://localhost:8000/auth/logout
+Content-Type: application/json
+
+{
+  "token": "TOKEN_DE_REFRESH_À_REVOIR"
+}
+
+### Infos utilisateur connecté (requires Bearer token)
+GET http://localhost:8000/auth/me
+Authorization: Bearer ACCESS_TOKEN_ICI
+
+
+# =================================
+# 2. Catégories et Composants
+# =================================
+
+### Lister les catégories de composants
+GET http://localhost:8000/categories
+
+### Lister composants disponibles (avec filtres optionnels)
+GET http://localhost:8000/composants?categorie=ID_CATEGORIE&marque=MARQUE
+
+### Détail d’un composant
+GET http://localhost:8000/composants/:id
+
+### Ajouter un composant (admin only - requires Bearer token)
+POST http://localhost:8000/composants
+Authorization: Bearer ADMIN_ACCESS_TOKEN
+Content-Type: application/json
+
+{
+  "titre": "Intel Core i9",
+  "categorie_id": "ID_CATEGORIE_CPU",
   "marque": "Intel",
-  "nom": "Core i9-13900K",
-  "prix": 629.99,
-  "specs": {
-    "cores": 24,
-    "threads": 32,
-    "base_clock": "3.0 GHz"
-  }
+  "prix": 500,
+  "specifications": { "frequence": "3.6GHz", "cores": 8 }
 }
 
-###
-
-### Récupérer tous les composants
-GET http://localhost:801/composants
-Authorization: Bearer <TON_ACCESS_TOKEN_ICI>
-
-###
-
-### Modifier un composant (remplace l’ID avec un vrai ID MongoDB)
-PUT http://localhost:801/composants/665a26aabb1234567890abcd
-Authorization: Bearer <TON_ACCESS_TOKEN_ICI>
+### Modifier un composant (admin only)
+PUT http://localhost:8000/composants/:id
+Authorization: Bearer ADMIN_ACCESS_TOKEN
 Content-Type: application/json
 
 {
-  "prix": 599.99
+  "prix": 520
 }
 
-###
+### Supprimer un composant (admin only)
+DELETE http://localhost:8000/composants/:id
+Authorization: Bearer ADMIN_ACCESS_TOKEN
 
-### Supprimer un composant (remplace aussi avec un vrai ID MongoDB)
-DELETE http://localhost:801/composants/665a26aabb1234567890abcd
-Authorization: Bearer <TON_ACCESS_TOKEN_ICI>
+
+# ======================================
+# 3. Partenaires marchands & Coûts
+# ======================================
+
+### Lister tous les partenaires
+GET http://localhost:8000/partenaires
+
+### Lister prix pour un composant donné
+GET http://localhost:8000/partenaires/:composantId/prix
+
+### Ajouter un partenaire (admin only)
+POST http://localhost:8000/partenaires
+Authorization: Bearer ADMIN_ACCESS_TOKEN
+Content-Type: application/json
+
+{
+  "nom": "LDLC",
+  "site_web": "https://ldlc.com"
+}
+
+### Modifier partenaire (admin only)
+PUT http://localhost:8000/partenaires/:id
+Authorization: Bearer ADMIN_ACCESS_TOKEN
+Content-Type: application/json
+
+{
+  "nom": "Nouveau Nom"
+}
+
+### Supprimer partenaire (admin only)
+DELETE http://localhost:8000/partenaires/:id
+Authorization: Bearer ADMIN_ACCESS_TOKEN
+
+### Ajouter/Maj prix d’un composant par un partenaire (admin only)
+POST http://localhost:8000/partenaires/:partenaireId/prix/:composantId
+Authorization: Bearer ADMIN_ACCESS_TOKEN
+Content-Type: application/json
+
+{
+  "prix": 450
+}
+
+### Supprimer prix (admin only)
+DELETE http://localhost:8000/partenaires/:partenaireId/prix/:composantId
+Authorization: Bearer ADMIN_ACCESS_TOKEN
+
+
+# ===============================
+# 4. Gestion Configurations PC
+# ===============================
+
+### Lister configurations de l'utilisateur connecté
+GET http://localhost:8000/configurations
+Authorization: Bearer USER_ACCESS_TOKEN
+
+### Créer une nouvelle configuration
+POST http://localhost:8000/configurations
+Authorization: Bearer USER_ACCESS_TOKEN
+Content-Type: application/json
+
+{
+  "nom": "Ma config gaming",
+  "composants": ["id_composant1", "id_composant2", "id_composant3"]
+}
+
+### Modifier une configuration
+PUT http://localhost:8000/configurations/:id
+Authorization: Bearer USER_ACCESS_TOKEN
+Content-Type: application/json
+
+{
+  "nom": "Ma config gaming modifiée"
+}
+
+### Supprimer une configuration
+DELETE http://localhost:8000/configurations/:id
+Authorization: Bearer USER_ACCESS_TOKEN
+
+### Exporter configuration en PDF
+GET http://localhost:8000/configurations/:id/export
+Authorization: Bearer USER_ACCESS_TOKEN
+
+
+# =================================
+# 5. Calcul Coût Total d’une config
+# =================================
+
+### Exemple simple (tu peux adapter selon API)
+GET http://localhost:8000/configurations/:id/cout-total
+Authorization: Bearer USER_ACCESS_TOKEN

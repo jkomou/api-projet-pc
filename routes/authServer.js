@@ -1,12 +1,19 @@
-const express = require('express');
-const jwt = require('jsonwebtoken');
-const router = require('./auth'); // ton routeur d’auth (login, token...)
+// authServer.js
+const mongoose = require('mongoose');
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
-const app = express();
-app.use(express.json());
+const app = require('./authApp'); // version qui n’écoute pas
 
-app.use('/', router);
+const port = process.env.AUTH_PORT || 8001;
 
-app.listen(800, () => {
-  console.log('Auth server running on port 800');
-});
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => {
+    console.log('✅ Connexion MongoDB réussie (auth server)');
+    app.listen(port, () => {
+      console.log(`🔐 Auth server running on port ${port}`);
+    });
+  })
+  .catch((err) => {
+    console.error('❌ Erreur MongoDB (auth server) :', err);
+  });

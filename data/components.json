@@ -1,105 +1,34 @@
 [
-    {
-      "id": "cpu1",
-      "categorie_id": "cpu",
-      "marque": "Intel",
-      "nom": "Intel Core i7-13700K",
-      "prix": 429.99,
-      "specs": {
-        "coeurs": 16,
-        "threads": 24,
-        "frequence_base": "3.4GHz",
-        "frequence_boost": "5.4GHz",
-        "socket": "LGA1700"
-      }
-    },
-    {
-      "id": "cpu2",
-      "categorie_id": "cpu",
-      "marque": "AMD",
-      "nom": "AMD Ryzen 7 7800X3D",
-      "prix": 449.99,
-      "specs": {
-        "coeurs": 8,
-        "threads": 16,
-        "frequence_base": "4.2GHz",
-        "frequence_boost": "5.0GHz",
-        "socket": "AM5"
-      }
-    },
-    {
-      "id": "gpu1",
-      "categorie_id": "gpu",
-      "marque": "NVIDIA",
-      "nom": "GeForce RTX 4070 Ti",
-      "prix": 799.99,
-      "specs": {
-        "vram": "12 Go GDDR6X",
-        "frequence": "2.6GHz",
-        "consommation": "285W"
-      }
-    },
-    {
-      "id": "ram1",
-      "categorie_id": "ram",
-      "marque": "Corsair",
-      "nom": "Vengeance DDR5 32Go (2x16Go) 6000MHz",
-      "prix": 159.99,
-      "specs": {
-        "type": "DDR5",
-        "frequence": "6000MHz",
-        "capacite": "32Go",
-        "latence": "CL36"
-      }
-    },
-    {
-      "id": "ssd1",
-      "categorie_id": "stockage",
-      "marque": "Samsung",
-      "nom": "Samsung 980 PRO 1To NVMe",
-      "prix": 119.99,
-      "specs": {
-        "type": "NVMe SSD",
-        "capacite": "1To",
-        "interface": "PCIe 4.0"
-      }
-    },
-    {
-      "id": "mb1",
-      "categorie_id": "carte_mere",
-      "marque": "ASUS",
-      "nom": "ASUS ROG Strix Z790-E",
-      "prix": 379.99,
-      "specs": {
-        "socket": "LGA1700",
-        "chipset": "Z790",
-        "format": "ATX",
-        "memoire_prise_en_charge": "DDR5"
-      }
-    },
-    {
-      "id": "boitier1",
-      "categorie_id": "boitier",
-      "marque": "NZXT",
-      "nom": "NZXT H510",
-      "prix": 89.99,
-      "specs": {
-        "format": "ATX moyen tour",
-        "couleur": "Noir",
-        "fenetre_laterale": true
-      }
-    },
-    {
-      "id": "psu1",
-      "categorie_id": "alimentation",
-      "marque": "Corsair",
-      "nom": "Corsair RM850x 850W 80+ Gold",
-      "prix": 129.99,
-      "specs": {
-        "puissance": "850W",
-        "certification": "80+ Gold",
-        "modulaire": true
-      }
-    }
-  ]
-  
+  {
+    "id": "cpu1",
+    "nom": "Intel Core i7",
+    "type": "CPU",
+    "prix": 300,
+    "marque": "Intel",
+    "categorie_id": "64bfa3e4c9a3e76b09e66a12"
+  },
+  {
+    "id": "gpu1",
+    "nom": "NVIDIA RTX 3080",
+    "type": "GPU",
+    "prix": 700,
+    "marque": "NVIDIA",
+    "categorie_id": "64bfa3e4c9a3e76b09e66a34"
+  },
+  {
+    "id": "ram1",
+    "nom": "Corsair 16GB",
+    "type": "RAM",
+    "prix": 150,
+    "marque": "Corsair",
+    "categorie_id": "64bfa3e4c9a3e76b09e66a56"
+  },
+  {
+    "id": "ssd1",
+    "nom": "Samsung 1TB SSD",
+    "type": "SSD",
+    "prix": 200,
+    "marque": "Samsung",
+    "categorie_id": "64bfa3e4c9a3e76b09e66a78"
+  }
+]

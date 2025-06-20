@@ -1,28 +1,20 @@
 const express = require('express');
-const jwt = require('jsonwebtoken');
 const router = express.Router();
-require('dotenv').config({ path: require('path').resolve(__dirname, '../.env') });
+const auth = require('../authMiddleware'); // réutilise ton middleware auth centralisé
+const Utilisateur = require('../models/Utilisateur');
 
-const posts = [
-  { username: 'Kyle', title: 'Test 1' },
-  { username: 'max@yahoo.fr', title: 'Test 2' }
-];
+// Plus besoin de redéfinir authenticateToken ici, on utilise authMiddleware
 
-function authenticateToken(req, res, next) {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
-  if (!token) return res.sendStatus(401);
+router.get('/posts', auth, async (req, res) => {
+  try {
+    const utilisateur = await Utilisateur.findOne({ email: req.user.email });
+    if (!utilisateur) return res.status(404).json({ message: 'Utilisateur non trouvé' });
 
-  console.log('JWT_SECRET:', process.env.JWT_SECRET);
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) return res.sendStatus(403);
-    req.user = user;
-    next();
-  });
-}
-
-router.get('/posts', authenticateToken, (req, res) => {
-  res.json(posts.filter(post => post.username === req.user.name));
+    res.json(utilisateur);
+  } catch (error) {
+    console.error('Erreur:', error);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
 });
 
 module.exports = router;

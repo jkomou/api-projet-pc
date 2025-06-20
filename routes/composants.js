@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const Composant = require('../models/Composant'); // Assure-toi que le chemin est correct
-const auth = require('../authMiddleware'); // Middleware d'authentification (si utilisé)
+const Composant = require('../models/Composant');
+const auth = require('../authMiddleware');
 
 // ✅ GET : liste de tous les composants avec filtres
 router.get('/', async (req, res) => {
@@ -18,8 +18,8 @@ router.get('/', async (req, res) => {
   }
 });
 
-// ✅ POST : ajout d’un composant
-router.post('/', async (req, res) => {
+// ✅ POST : ajout d’un composant (protégé)
+router.post('/', auth, async (req, res) => {
   try {
     const nouveauComposant = new Composant(req.body);
     await nouveauComposant.save();
@@ -29,8 +29,8 @@ router.post('/', async (req, res) => {
   }
 });
 
-// ✅ PUT : modification d’un composant
-router.put('/:id', async (req, res) => {
+// ✅ PUT : modification d’un composant (protégé)
+router.put('/:id', auth, async (req, res) => {
   try {
     const updated = await Composant.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!updated) return res.status(404).json({ message: 'Composant non trouvé' });
@@ -40,25 +40,14 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-// ✅ DELETE : suppression d’un composant
-router.delete('/:id', async (req, res) => {
+// ✅ DELETE : suppression d’un composant (protégé)
+router.delete('/:id', auth, async (req, res) => {
   try {
     const supprimé = await Composant.findByIdAndDelete(req.params.id);
     if (!supprimé) return res.status(404).json({ message: 'Composant non trouvé' });
     res.json({ message: 'Composant supprimé', composant: supprimé });
   } catch (err) {
     res.status(500).json({ message: 'Erreur serveur', erreur: err.message });
-  }
-});
-
-// 🔒 Exemple de route protégée (utilise un middleware d’auth)
-router.post('/ajouter', auth, async (req, res) => {
-  try {
-    const composant = new Composant(req.body);
-    await composant.save();
-    res.json({ message: 'Composant ajouté avec succès !', composant });
-  } catch (err) {
-    res.status(400).json({ message: 'Erreur', erreur: err.message });
   }
 });
 

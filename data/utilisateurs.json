@@ -1,38 +1,12 @@
 [
   {
-    "id": "u1",
-    "nom": "Alice Dupont",
-    "email": "alice.dupont@example.com",
-    "mot_de_passe": "hashed_password_1"
+    "nom": "Jean Dupont",
+    "email": "jean.dupont@example.com",
+    "mot_de_passe": "motdepasse123"
   },
   {
-    "id": "u2",
-    "nom": "Bruno Martin",
-    "email": "bruno.martin@example.com",
-    "mot_de_passe": "hashed_password_2"
-  },
-  {
-    "id": "u3",
-    "nom": "Claire Petit",
-    "email": "claire.petit@example.com",
-    "mot_de_passe": "hashed_password_3"
-  },
-  {
-    "id": "u4",
-    "nom": "David Moreau",
-    "email": "david.moreau@example.com",
-    "mot_de_passe": "hashed_password_4"
-  },
-  {
-    "id": "u5",
-    "nom": "Emma Lefevre",
-    "email": "emma.lefevre@example.com",
-    "mot_de_passe": "hashed_password_5"
-  },
-  {
-    "id": "u6",
-    "nom": "Amadou Sangaré",
-    "email": "ama.sangaré@example.com",
-    "mot_de_passe": "hashed_password_5"
+    "nom": "Marie Curie",
+    "email": "marie.curie@example.com",
+    "mot_de_passe": "monmotdepasse456"
   }
 ]
