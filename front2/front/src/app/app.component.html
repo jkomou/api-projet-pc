@@ -1,2 +1,14 @@
-<app-navbar></app-navbar>
-<router-outlet></router-outlet>
+<!-- Navigation globale -->
+<nav class="navbar">
+  <a routerLink="/home" routerLinkActive="active">Accueil</a>
+  <a routerLink="/components" routerLinkActive="active">Composants</a>
+  <a routerLink="/catalogue" routerLinkActive="active">Catalogue</a>
+  <a routerLink="/configurations" routerLinkActive="active">Configurations</a>
+  <a routerLink="/partenaires" routerLinkActive="active">Partenaires</a>
+  <button class="logout-btn" (click)="logout()">Déconnexion</button>
+</nav>
+
+<!-- Affichage des pages -->
+<main class="content">
+  <router-outlet></router-outlet>
+</main>

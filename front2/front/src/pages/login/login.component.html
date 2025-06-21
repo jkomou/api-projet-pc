@@ -1,26 +1,30 @@
-<div class="login-container">
-    <mat-card class="login-card">
-      <h1>Connexion</h1>
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-  
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Email</mat-label>
-          <input matInput formControlName="email" type="email" required />
-        </mat-form-field>
-  
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Mot de passe</mat-label>
-          <input matInput formControlName="password" type="password" required />
-        </mat-form-field>
-  
-        <button mat-raised-button color="primary" class="full-width" type="submit" [disabled]="loginForm.invalid">
-          Se connecter
-        </button>
-      </form>
-  
-      <p class="bottom-link">
-        Pas de compte ? <a routerLink="/register">Inscrivez-vous !</a>
-      </p>
-    </mat-card>
-  </div>
-  
+<div class="login-container"> 
+  <mat-card class="login-card">
+    <h1>Connexion</h1>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+      <!-- Champ email -->
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" type="email" required />
+      </mat-form-field>
+
+      <!-- Champ mot de passe avec le bon formControlName -->
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Mot de passe</mat-label>
+        <input matInput formControlName="mot_de_passe" type="password" required />
+      </mat-form-field>
+
+      <!-- Bouton de connexion -->
+      <button mat-raised-button color="primary" class="full-width" type="submit" [disabled]="loginForm.invalid">
+        Se connecter
+      </button>
+    </form>
+
+    <!-- Lien vers l'inscription -->
+    <p class="bottom-link">
+      Pas de compte ? <a routerLink="/register">Inscrivez-vous !</a>
+    </p>
+  </mat-card>
+</div>

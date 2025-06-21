@@ -1,0 +1,65 @@
+<div class="page">
+  <h1>Gestion des Partenaires Marchands</h1>
+
+  <mat-card class="form-ajout">
+    <h2>Ajouter un partenaire</h2>
+    <mat-form-field appearance="fill">
+      <mat-label>Nom du site</mat-label>
+      <input matInput [(ngModel)]="nouveauPartenaire.nom" placeholder="Nom du site">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>URL</mat-label>
+      <input matInput [(ngModel)]="nouveauPartenaire.url" placeholder="https://...">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Infos synchronisation</mat-label>
+      <input matInput [(ngModel)]="nouveauPartenaire.syncInfo" placeholder="Ex: Synchronisation quotidienne">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Programme d'affiliation</mat-label>
+      <input matInput [(ngModel)]="nouveauPartenaire.affiliation" placeholder="Ex: 10% commission">
+    </mat-form-field>
+
+    <button mat-flat-button color="primary" (click)="ajouterPartenaire()">Ajouter</button>
+  </mat-card>
+
+  <mat-table [dataSource]="partenaires" class="mat-elevation-z8">
+
+    <ng-container matColumnDef="nom">
+      <mat-header-cell *matHeaderCellDef>Nom</mat-header-cell>
+      <mat-cell *matCellDef="let p">{{ p.nom }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="url">
+      <mat-header-cell *matHeaderCellDef>URL</mat-header-cell>
+      <mat-cell *matCellDef="let p">
+        <a href="{{p.url}}" target="_blank">{{ p.url }}</a>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="syncInfo">
+      <mat-header-cell *matHeaderCellDef>Synchronisation</mat-header-cell>
+      <mat-cell *matCellDef="let p">{{ p.syncInfo }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="affiliation">
+      <mat-header-cell *matHeaderCellDef>Affiliation</mat-header-cell>
+      <mat-cell *matCellDef="let p">{{ p.affiliation }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+      <mat-cell *matCellDef="let p">
+        <button mat-icon-button color="warn" (click)="supprimerPartenaire(p.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="['nom', 'url', 'syncInfo', 'affiliation', 'actions']"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: ['nom', 'url', 'syncInfo', 'affiliation', 'actions']"></mat-row>
+  </mat-table>
+</div>

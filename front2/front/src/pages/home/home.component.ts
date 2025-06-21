@@ -1,25 +1,25 @@
-// src/app/pages/home/home.component.ts
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterModule } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterModule,
-    MatButtonModule
-  ],
+  imports: [CommonModule, RouterModule, MatButtonModule],
 })
 export class HomeComponent {
   constructor(private router: Router) {}
 
+  goTo(path: string) {
+    this.router.navigate([path]);
+  }
+
   logout() {
-    localStorage.removeItem('token');
+    // Optionnel : clear du token localStorage
+    localStorage.removeItem('accessToken');
     this.router.navigate(['/login']);
   }
 }

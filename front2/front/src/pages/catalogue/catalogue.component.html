@@ -1,0 +1,43 @@
+<div class="page">
+  <h1>Catalogue des composants</h1>
+
+  <div class="filters">
+    <mat-form-field appearance="fill">
+      <mat-label>Catégorie</mat-label>
+      <mat-select [(value)]="selectedCategory" (selectionChange)="applyFilters()">
+        <mat-option value="">Toutes</mat-option>
+        <mat-option *ngFor="let cat of categories" [value]="cat">{{ cat }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Marque</mat-label>
+      <input matInput [(ngModel)]="selectedBrand" (ngModelChange)="applyFilters()" placeholder="Filtrer par marque">
+    </mat-form-field>
+  </div>
+
+  <table mat-table [dataSource]="filteredComponents" class="mat-elevation-z8">
+    <ng-container matColumnDef="nom">
+      <th mat-header-cell *matHeaderCellDef>Nom</th>
+      <td mat-cell *matCellDef="let c">{{ c.nom }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef>Catégorie</th>
+      <td mat-cell *matCellDef="let c">{{ c.type }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="marque">
+      <th mat-header-cell *matHeaderCellDef>Marque</th>
+      <td mat-cell *matCellDef="let c">{{ c.marque }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="prix">
+      <th mat-header-cell *matHeaderCellDef>Prix (€)</th>
+      <td mat-cell *matCellDef="let c">{{ c.prix | currency:'EUR' }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="['nom','type','marque','prix']"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['nom','type','marque','prix']"></tr>
+  </table>
+</div>

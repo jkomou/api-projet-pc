@@ -8,7 +8,6 @@ const utilisateurSchema = new mongoose.Schema({
   date_inscription: { type: Date, default: Date.now }
 });
 
-// Avant sauvegarde, hasher mot_de_passe si modifié ou nouveau
 utilisateurSchema.pre('save', async function(next) {
   if (!this.isModified('mot_de_passe')) return next();
 
@@ -21,8 +20,11 @@ utilisateurSchema.pre('save', async function(next) {
   }
 });
 
-// Méthode pour comparer mot_de_passe en clair avec hash
-utilisateurSchema.methods.comparePassword = function(candidatePassword) {
+utilisateurSchema.methods.comparePassword = async function(candidatePassword) {
+  console.log('Comparing password:', candidatePassword, 'with hash:', this.mot_de_passe);
+  if (!candidatePassword || !this.mot_de_passe) {
+    throw new Error('Mot de passe ou hash manquant');
+  }
   return bcrypt.compare(candidatePassword, this.mot_de_passe);
 };
 

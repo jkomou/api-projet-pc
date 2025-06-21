@@ -1,0 +1,34 @@
+<div class="page">
+  <h1 class="title">Gestion des Configurations</h1>
+
+  <div class="filters">
+    <mat-form-field appearance="fill">
+      <mat-label>Utilisateur</mat-label>
+      <input matInput placeholder="Nom ou email" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Date</mat-label>
+      <input matInput type="date" />
+    </mat-form-field>
+
+    <button mat-flat-button color="primary">Filtrer</button>
+  </div>
+
+  <mat-card class="config-list" *ngFor="let config of configurations">
+    <mat-card-title>Configuration #{{config.id}}</mat-card-title>
+    <mat-card-content>
+      <p><strong>Utilisateur:</strong> {{config.user}}</p>
+      <p><strong>Date:</strong> {{config.date | date}}</p>
+      <p><strong>Composants:</strong></p>
+      <ul>
+        <li *ngFor="let c of config.composants">{{c}}</li>
+      </ul>
+      <p><strong>Coût total:</strong> {{config.total}} €</p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-stroked-button color="accent">Modifier</button>
+      <button mat-stroked-button color="warn">Supprimer</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

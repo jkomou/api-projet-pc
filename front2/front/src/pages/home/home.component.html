@@ -1,6 +1,12 @@
-<!-- src/app/pages/home/home.component.html -->
 <div class="home-container">
-    <h1>Bienvenue !</h1>
-    <button mat-raised-button color="warn" (click)="logout()">Déconnexion</button>
+  <h1>Tableau de bord Administrateur</h1>
+
+  <div class="button-grid">
+    <button mat-raised-button color="primary" (click)="goTo('/catalogue')">Catalogue</button>
+    <button mat-raised-button color="accent" (click)="goTo('/components')">Composants</button>
+    <button mat-raised-button color="primary" (click)="goTo('/configurations')">Configurations</button>
+    <button mat-raised-button color="accent" (click)="goTo('/partenaires')">Partenaires</button>
   </div>
-  
+
+  <button mat-stroked-button color="warn" class="logout-btn" (click)="logout()">Déconnexion</button>
+</div>

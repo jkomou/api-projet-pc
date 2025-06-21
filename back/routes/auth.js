@@ -8,32 +8,49 @@ const Utilisateur = require('../models/Utilisateur');
 const Refresh = require('../models/Refresh'); // modèle refresh tokens
 
 // Login : email + mot de passe
+const secret = 'ton_secret_pour_jwt'; // à mettre dans un fichier .env sécurisé
+
 router.post('/login', async (req, res) => {
   const { email, mot_de_passe } = req.body;
+
+  console.log('Mot de passe clair reçu:', mot_de_passe);  // <-- ici
+
+  if (!email || !mot_de_passe) return res.status(400).json({ message: 'Email et mot_de_passe requis' });
 
   try {
     const utilisateur = await Utilisateur.findOne({ email });
     if (!utilisateur) {
-      return res.status(401).json({ message: 'Email ou mot de passe incorrect' });
+      return res.status(401).json({ message: 'Utilisateur non trouvé' });
     }
 
-    const isMatch = await bcrypt.compare(mot_de_passe, utilisateur.mot_de_passe);
+    console.log('Utilisateur trouvé:', utilisateur);
+
+    if (!utilisateur.mot_de_passe) {
+      return res.status(500).json({ message: 'Mot de passe manquant pour cet utilisateur' });
+    }
+
+    const isMatch = await utilisateur.comparePassword(mot_de_passe);
+    console.log('Mot de passe correspond:', isMatch); // <-- ici aussi
+
     if (!isMatch) {
-      return res.status(401).json({ message: 'Email ou mot de passe incorrect' });
+      return res.status(401).json({ message: 'Mot de passe incorrect' });
     }
 
-    const userPayload = { id: utilisateur._id, email: utilisateur.email };
-    const accessToken = jwt.sign(userPayload, process.env.JWT_SECRET, { expiresIn: '15m' });
-    const refreshToken = jwt.sign(userPayload, process.env.REFRESH_JWT_SECRET, { expiresIn: '7d' });
+    // Générer token JWT (exemple simple)
+    const payload = { id: utilisateur._id, nom: utilisateur.nom, email: utilisateur.email };
+    const accessToken = jwt.sign(payload, 'ton_secret', { expiresIn: '1h' });
 
-    await Refresh.create({ token: refreshToken, user: utilisateur._id });
+    res.json({
+      accessToken,
+      user: payload
+    });
 
-    res.json({ accessToken, refreshToken });
   } catch (err) {
-    console.error('Erreur lors du login :', err);
+    console.error('Erreur login:', err);
     res.status(500).json({ message: 'Erreur serveur' });
   }
 });
+
 
 // Rafraîchir un token
 router.post('/token', async (req, res) => {
@@ -57,12 +74,22 @@ router.post('/token', async (req, res) => {
 router.post('/signup', async (req, res) => {
   const { nom, email, mot_de_passe } = req.body;
 
-  try {
-    const existant = await Utilisateur.findOne({ email });
-    if (existant) return res.status(400).json({ message: 'Email déjà utilisé' });
+  // Validation basique des champs
+  if (!nom || !email || !mot_de_passe) {
+    return res.status(400).json({ message: 'Tous les champs sont obligatoires' });
+  }
 
+  try {
+    // Vérifier si email déjà utilisé
+    const existant = await Utilisateur.findOne({ email });
+    if (existant) {
+      return res.status(400).json({ message: 'Email déjà utilisé' });
+    }
+
+    // Hasher le mot de passe
     const hashedPassword = await bcrypt.hash(mot_de_passe, 10);
 
+    // Créer et sauvegarder l'utilisateur
     const utilisateur = new Utilisateur({
       nom,
       email,
@@ -72,7 +99,7 @@ router.post('/signup', async (req, res) => {
 
     await utilisateur.save();
 
-    res.status(201).json({ message: 'Utilisateur créé' });
+    res.status(201).json({ message: 'Utilisateur créé avec succès' });
   } catch (err) {
     console.error('Erreur lors de l\'inscription :', err);
     res.status(500).json({ message: 'Erreur serveur' });

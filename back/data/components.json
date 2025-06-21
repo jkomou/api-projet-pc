@@ -1,7 +1,7 @@
 [
   {
     "id": "cpu1",
-    "nom": "Intel Core i7",
+    "titre": "Intel Core i7",
     "type": "CPU",
     "prix": 300,
     "marque": "Intel",
@@ -9,7 +9,7 @@
   },
   {
     "id": "gpu1",
-    "nom": "NVIDIA RTX 3080",
+    "titre": "NVIDIA RTX 3080",
     "type": "GPU",
     "prix": 700,
     "marque": "NVIDIA",
@@ -17,7 +17,7 @@
   },
   {
     "id": "ram1",
-    "nom": "Corsair 16GB",
+    "titre": "Corsair 16GB",
     "type": "RAM",
     "prix": 150,
     "marque": "Corsair",
@@ -25,7 +25,7 @@
   },
   {
     "id": "ssd1",
-    "nom": "Samsung 1TB SSD",
+    "titre": "Samsung 1TB SSD",
     "type": "SSD",
     "prix": 200,
     "marque": "Samsung",
